@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BusBerry</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-mode">
+    <div class="auth-container">
+        <div class="auth-card glassmorphism">
+            <div class="auth-header">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚌</span>
+                    <span class="logo-text">BusBerry</span>
+                </a>
+                <h2>Welcome Back</h2>
+                <p>Sign in to continue your journey</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-envelope"></i> Email
+                    </label>
+                    <input type="email" id="email" class="input-field" placeholder="Enter your email" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input type="password" id="password" class="input-field" placeholder="Enter your password" required>
+                    <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>OR</span>
+            </div>
+
+            <div class="social-login">
+                <button class="btn-secondary" style="width: 100%;">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="register.html">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await apiRequest('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+
+                storage.set(CONFIG.STORAGE.TOKEN, response.token);
+                storage.set(CONFIG.STORAGE.REFRESH_TOKEN, response.refreshToken);
+                storage.set(CONFIG.STORAGE.USER, response.user);
+
+                showToast('Login successful!', 'success');
+                setTimeout(() => {
+                    window.location.href = response.user.role === 'ADMIN' ? 'admin/dashboard.html' :
+                                          response.user.role === 'OPERATOR' ? 'operator/dashboard.html' :
+                                          'passenger/dashboard.html';
+                }, 1000);
+            } catch (error) {
+                showToast(error.message || 'Login failed', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - BusBerry</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-mode">
+    <div class="auth-container">
+        <div class="auth-card glassmorphism">
+            <div class="auth-header">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚌</span>
+                    <span class="logo-text">BusBerry</span>
+                </a>
+                <h2>Create Account</h2>
+                <p>Join BusBerry and start your journey</p>
+            </div>
+
+            <form id="registerForm" class="auth-form">
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-user"></i> First Name
+                    </label>
+                    <input type="text" id="firstName" class="input-field" placeholder="Enter first name" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-user"></i> Last Name
+                    </label>
+                    <input type="text" id="lastName" class="input-field" placeholder="Enter last name">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-envelope"></i> Email
+                    </label>
+                    <input type="email" id="email" class="input-field" placeholder="Enter your email" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-phone"></i> Phone
+                    </label>
+                    <input type="tel" id="phone" class="input-field" placeholder="Enter phone number" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input type="password" id="password" class="input-field" placeholder="Create a password" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-user-tag"></i> Account Type
+                    </label>
+                    <select id="role" class="input-field" required>
+                        <option value="USER">Passenger</option>
+                        <option value="OPERATOR">Bus Operator</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                    <span>Create Account</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('role').value
+            };
+
+            try {
+                const response = await apiRequest('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+
+                storage.set(CONFIG.STORAGE.TOKEN, response.token);
+                storage.set(CONFIG.STORAGE.REFRESH_TOKEN, response.refreshToken);
+                storage.set(CONFIG.STORAGE.USER, response.user);
+
+                showToast('Registration successful!', 'success');
+                setTimeout(() => {
+                    window.location.href = response.user.role === 'OPERATOR' ? 'operator/dashboard.html' : 'passenger/dashboard.html';
+                }, 1000);
+            } catch (error) {
+                showToast(error.message || 'Registration failed', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
+

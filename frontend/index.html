@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusBerry - Your Journey, Reimagined | India's Most Advanced Bus Booking Platform</title>
+    <meta name="description" content="Book premium buses with AI-powered recommendations, real-time tracking, and seamless experience. BusBerry - The future of intercity travel in India.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-mode">
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="/" class="logo">
+                    <span class="logo-icon">🚌</span>
+                    <span class="logo-text">BusBerry</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#routes" class="nav-link">Popular Routes</a></li>
+                <li><a href="#offers" class="nav-link">Offers</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="pages/login.html" class="nav-link">Login</a></li>
+                <li><a href="pages/register.html" class="nav-link btn-primary">Sign Up</a></li>
+            </ul>
+            
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <div class="gradient-overlay"></div>
+            <div class="animated-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line">Your Journey,</span>
+                    <span class="title-line highlight">Reimagined</span>
+                </h1>
+                <p class="hero-subtitle">
+                    India's most advanced bus booking platform powered by AI, real-time tracking, and premium comfort.
+                </p>
+                
+                <!-- AI-Powered Search Bar -->
+                <div class="search-container" id="searchContainer">
+                    <div class="search-box glassmorphism">
+                        <div class="search-tabs">
+                            <button class="tab-btn active" data-tab="one-way">One Way</button>
+                            <button class="tab-btn" data-tab="round-trip">Round Trip</button>
+                        </div>
+                        
+                        <form class="search-form" id="searchForm">
+                            <div class="search-row">
+                                <div class="search-field">
+                                    <label><i class="fas fa-map-marker-alt"></i> From</label>
+                                    <input type="text" id="fromCity" placeholder="Enter source city" autocomplete="off" required>
+                                    <div class="suggestions" id="fromSuggestions"></div>
+                                </div>
+                                
+                                <button type="button" class="swap-btn" id="swapCities" aria-label="Swap cities">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </button>
+                                
+                                <div class="search-field">
+                                    <label><i class="fas fa-map-marker-alt"></i> To</label>
+                                    <input type="text" id="toCity" placeholder="Enter destination" autocomplete="off" required>
+                                    <div class="suggestions" id="toSuggestions"></div>
+                                </div>
+                                
+                                <div class="search-field">
+                                    <label><i class="fas fa-calendar-alt"></i> Date</label>
+                                    <input type="date" id="travelDate" required>
+                                </div>
+                                
+                                <div class="search-field">
+                                    <label><i class="fas fa-users"></i> Passengers</label>
+                                    <select id="passengers">
+                                        <option value="1">1 Passenger</option>
+                                        <option value="2" selected>2 Passengers</option>
+                                        <option value="3">3 Passengers</option>
+                                        <option value="4">4 Passengers</option>
+                                        <option value="5+">5+ Passengers</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="search-btn">
+                                    <span>Search Buses</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Advanced Filters Toggle -->
+                            <div class="advanced-filters-toggle">
+                                <button type="button" class="filter-toggle-btn" id="filterToggle">
+                                    <i class="fas fa-sliders-h"></i> Advanced Filters
+                                </button>
+                            </div>
+                            
+                            <!-- Advanced Filters -->
+                            <div class="advanced-filters" id="advancedFilters" style="display: none;">
+                                <div class="filter-group">
+                                    <label>Seat Type</label>
+                                    <div class="checkbox-group">
+                                        <label><input type="checkbox" value="sleeper"> Sleeper</label>
+                                        <label><input type="checkbox" value="semi-sleeper"> Semi-Sleeper</label>
+                                        <label><input type="checkbox" value="seater"> Seater</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Special Features</label>
+                                    <div class="checkbox-group">
+                                        <label><input type="checkbox" value="ladies-seat"> Ladies Seat Zone</label>
+                                        <label><input type="checkbox" value="silent-cabin"> Silent Cabin</label>
+                                        <label><input type="checkbox" value="eco-friendly"> Eco-Friendly</label>
+                                        <label><input type="checkbox" value="upper-berth"> Upper Berth</label>
+                                        <label><input type="checkbox" value="lower-berth"> Lower Berth</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label>Price Range</label>
+                                    <input type="range" id="priceRange" min="0" max="5000" value="5000">
+                                    <div class="price-display">
+                                        <span>₹0</span>
+                                        <span id="maxPrice">₹5000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- AI Suggestions -->
+                    <div class="ai-suggestions glassmorphism" id="aiSuggestions">
+                        <div class="ai-header">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Travel Assistant</span>
+                        </div>
+                        <div class="suggestion-items" id="suggestionItems">
+                            <div class="suggestion-item">
+                                <i class="fas fa-star"></i>
+                                <span>Best buses available today</span>
+                            </div>
+                            <div class="suggestion-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Fastest route for your destination</span>
+                            </div>
+                            <div class="suggestion-item">
+                                <i class="fas fa-couch"></i>
+                                <span>Most comfortable options tonight</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card glassmorphism">
+                    <div class="stat-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="50000">0</h3>
+                        <p class="stat-label">Buses Available</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card glassmorphism">
+                    <div class="stat-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="2000">0</h3>
+                        <p class="stat-label">Routes Covered</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card glassmorphism">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="1000000">0</h3>
+                        <p class="stat-label">Happy Travelers</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card glassmorphism">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-target="4.8">0</h3>
+                        <p class="stat-label">Average Rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Routes -->
+    <section class="popular-routes" id="routes">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Popular Routes</h2>
+                <p class="section-subtitle">Most booked routes with premium buses</p>
+            </div>
+            
+            <div class="routes-grid" id="routesGrid">
+                <!-- Routes will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers & Coupons -->
+    <section class="offers-section" id="offers">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Special Offers</h2>
+                <p class="section-subtitle">Exclusive deals just for you</p>
+            </div>
+            
+            <div class="offers-grid" id="offersGrid">
+                <!-- Offers will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose BusBerry?</h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card glassmorphism">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Search</h3>
+                    <p>Get personalized bus recommendations based on your preferences and travel history.</p>
+                </div>
+                
+                <div class="feature-card glassmorphism">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Real-Time GPS Tracking</h3>
+                    <p>Track your bus in real-time and get accurate arrival predictions.</p>
+                </div>
+                
+                <div class="feature-card glassmorphism">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Safe</h3>
+                    <p>Bank-level security with encrypted tickets and fraud detection.</p>
+                </div>
+                
+                <div class="feature-card glassmorphism">
+                    <div class="feature-icon">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h3>Premium Comfort</h3>
+                    <p>Choose from luxury buses with best-in-class amenities.</p>
+                </div>
+                
+                <div class="feature-card glassmorphism">
+                    <div class="feature-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h3>Best Prices</h3>
+                    <p>Dynamic pricing ensures you get the best deals available.</p>
+                </div>
+                
+                <div class="feature-card glassmorphism">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock customer support via chat, phone, or email.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <span class="logo-icon">🚌</span>
+                        <span class="logo-text">BusBerry</span>
+                    </div>
+                    <p>India's most advanced bus booking platform. Your journey, reimagined.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>For Passengers</h4>
+                    <ul>
+                        <li><a href="pages/passenger/dashboard.html">My Dashboard</a></li>
+                        <li><a href="pages/passenger/bookings.html">My Bookings</a></li>
+                        <li><a href="pages/passenger/wallet.html">Wallet</a></li>
+                        <li><a href="pages/passenger/referrals.html">Refer & Earn</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>For Operators</h4>
+                    <ul>
+                        <li><a href="pages/operator/dashboard.html">Operator Portal</a></li>
+                        <li><a href="pages/operator/register.html">Register as Operator</a></li>
+                        <li><a href="pages/operator/help.html">Help & Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 BusBerry Technologies. All rights reserved.</p>
+                <p>Domain: busberry.in | Made with ❤️ for India</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chatbot">
+            <i class="fas fa-comments"></i>
+            <span class="chatbot-badge">AI</span>
+        </button>
+        <div class="chatbot-window" id="chatbotWindow" style="display: none;">
+            <div class="chatbot-header">
+                <div class="chatbot-title">
+                    <i class="fas fa-robot"></i>
+                    <span>BusBerry AI Assistant</span>
+                </div>
+                <button class="chatbot-close" id="chatbotClose" aria-label="Close chatbot">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    <p>Hello! I'm your AI travel assistant. How can I help you today?</p>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message...">
+                <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+

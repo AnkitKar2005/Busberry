@@ -1,0 +1,13 @@
+**/.git
+**/.gitignore
+**/.mvn
+**/mvnw
+**/mvnw.cmd
+**/target
+**/.idea
+**/.vscode
+**/*.iml
+**/node_modules
+**/logs
+**/*.log
+

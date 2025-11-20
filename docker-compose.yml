@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: busberry-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: busberry
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - busberry-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: busberry-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/busberry
+      - JWT_SECRET=dGhpc2lzYXZlcnlsb25nc2VjcmV0a2V5Zm9yand0dG9rZW5nZW5lcmF0aW9uYW5kaXRtdXN0YmF0bGVhc3QyNTZiaXRzbG9uZ2ZvcnByb2R1Y3Rpb251c2U=
+    depends_on:
+      - mongodb
+    networks:
+      - busberry-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  busberry-network:
+    driver: bridge
+
